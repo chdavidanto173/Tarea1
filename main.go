@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"os"
 )
 
 func handler(writer http.ResponseWriter, request *http.Request) {
@@ -26,6 +26,6 @@ func handler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/book/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+    http.HandleFunc("/book/", handler)
+    http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
