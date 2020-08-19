@@ -1,31 +1,27 @@
 package main
 
 import (
-	"net/http"
+	"log"
+	"net"
 	"os"
+
+	pb "github.com/chdavidanto173/Tarea1"
+	"google.golang.org/grpc"
 )
 
-func handler(writer http.ResponseWriter, request *http.Request) {
-	var err error
-	readData("books.csv")
-	switch request.Method {
-	case "GET":
-		err = handleGet(writer, request)
-	case "POST":
-		err = handlePost(writer, request)
-	case "PUT":
-		err = handlePut(writer, request)
-	case "DELETE":
-		err = handleDelete(writer, request)
-	}
-	writeData("books.csv")
-	if err != nil {
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
-		return
-	}
-}
-
 func main() {
-    http.HandleFunc("/book/", handler)
-    http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	port := os.Getenv("PORT")
+	lis, err := net.Listen("tcp", ":"+port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	s := grpc.NewServer()
+	pb.RegisterBookInfoServer(s, &server{})
+
+	log.Printf("Starting gRPC listener on port " + port)
+
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }
