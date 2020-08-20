@@ -5,7 +5,7 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/chdavidanto173/Tarea1"
+	pb "github.com/chdavidanto173/Tarea1/booksapp"
 	"google.golang.org/grpc"
 )
 
