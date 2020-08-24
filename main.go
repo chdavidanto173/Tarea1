@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	sw "github.com/arce/gowebservices/go"
+	sw "github.com/chdavidanto173/gowebservices/go"
+
 )
 
 func main() {
