@@ -9,12 +9,12 @@
 package swagger
 
 type Book struct {
-    BookId string `json:"bookId,omitempty"`
-    Title string `json:"title,omitempty"`
-    Edition string `json:"edition,omitempty"`
-    Copyright string `json:"copyright,omitempty"`
-    Language string `json:"language,omitempty"`
-    Pages string `json:"pages,omitempty"`
-    Author string `json:"author,omitempty"`
-    Publisher string `json:"publisher,omitempty"`
+	BookId    string `json:"bookId,omitempty"`
+	Title     string `json:"title,omitempty"`
+	Edition   string `json:"edition,omitempty"`
+	Copyright string `json:"copyright,omitempty"`
+	Language  string `json:"language,omitempty"`
+	Pages     string `json:"pages,omitempty"`
+	Author    string `json:"author,omitempty"`
+	Publisher string `json:"publisher,omitempty"`
 }
