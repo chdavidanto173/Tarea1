@@ -1,5 +1,3 @@
-module github.com/chdavidanto173/gowebservices
+module github.com/chdavidanto173/Tarea1
 
 go 1.12
-
-require github.com/gorilla/mux v1.8.0
