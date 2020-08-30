@@ -92,6 +92,10 @@ components:
           type: string
         publisher:
           type: string
+          authorId:
+          type: string
+          publisherId:
+          type: string
       example:
         copyright: "2015"
         pages: "1054"
@@ -101,3 +105,176 @@ components:
         language: ENGLISH
         title: Database System
         bookId: book01
+        authorId: author01
+        publisherId: publisher01
+ /authors/{authorId}:
+    get:
+      summary: Returns a author by ID.
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+put:
+      summary: Update author information
+      parameters:
+      - name: authorId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Author data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: Delete a book by ID.
+      parameters:
+      - name: bookId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /authors/:
+    post:
+      summary: Create a new author
+      requestBody:
+        description: Author data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+       authorId:
+          type: string
+        name:
+          type: string
+        nationality:
+          type: string
+        bith:
+          type: string
+        genere:
+          type: string
+      example:
+        copyright: "2015"
+        pages: "1054"
+        name: Silbertzhz
+        nationality: Ingles
+        bith: 13/05/1980
+        genere: romantic
+      
+      /publishers/{publisherId}:
+    get:
+      summary: Returns a publisher by ID.
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Publisher'
+put:
+      summary: Update publisher information
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Publisher data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+        required: true
+      responses:
+        "200":
+          description: OK
+    delete:
+      summary: Delete a publisher by ID.
+      parameters:
+      - name: publisherId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /publishers/:
+    post:
+      summary: Create a new publisher
+      requestBody:
+        description: Publisher data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Publisher'
+        required: true
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Publisher:
+      type: object
+      properties:
+       publisherId:
+          type: string
+        name:
+          type: string
+        country:
+          type: string
+        founded:
+          type: string
+        genere:
+          type: string
+      example:
+        name : "Acantilado"
+        country : "Mexico"
+        founded : "12/05/1985"
+        genere :  "Literatura"

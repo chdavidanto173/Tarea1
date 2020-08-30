@@ -10,9 +10,10 @@ package swagger
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 type Route struct {
@@ -79,5 +80,67 @@ var routes = Routes{
 		strings.ToUpper("Post"),
 		"/books/",
 		BooksPost,
+	},
+
+	Route{
+		"AuthorsForBooksGet",
+		strings.ToUpper("Get"),
+		"/books/{AuthorId}",
+		AuthorsForBooksGet,
+	},
+
+	Route{
+		"AuthorsAuthorIdDelete",
+		strings.ToUpper("Delete"),
+		"/auhors/{auhorId}",
+		AuthorsAuthorIdDelete,
+	},
+
+	Route{
+		"AuthorsAuthorIdGet",
+		strings.ToUpper("Get"),
+		"/authors/{auhorId}",
+		AuthorsAuthorIdGet,
+	},
+
+	Route{
+		"AuthorsAuthorIdPut",
+		strings.ToUpper("Put"),
+		"/auhors/{auhorId}",
+		AuthorsAuthorIdPut,
+	},
+
+	Route{
+		"AuthorsPost",
+		strings.ToUpper("Post"),
+		"/auhors/",
+		AuthorsPost,
+	},
+	Route{
+		"PublisherPublisherIdDelete",
+		strings.ToUpper("Delete"),
+		"/publishers/{publisherId}",
+		PublishersPublisherIdDelete,
+	},
+
+	Route{
+		"PublishersPublisherIdGet",
+		strings.ToUpper("Get"),
+		"/publishers/{publisherId}",
+		PublishersPublisherIdGet,
+	},
+
+	Route{
+		"PublishersPublisherIdPut",
+		strings.ToUpper("Put"),
+		"/publishers/{publisherId}",
+		PublishersPublisherIdPut,
+	},
+
+	Route{
+		"PublishersPost",
+		strings.ToUpper("Post"),
+		"/publishers/",
+		PublishersPost,
 	},
 }

@@ -10,6 +10,7 @@ package swagger
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path"
 )
@@ -23,6 +24,16 @@ var books = []Book{
 		Author: "Andrew S. Tanenbaum", Publisher: "Andrew S. Tanenbaum"},
 }
 
+var authors = []Author{
+	Author{AuthorId: "Author1", Name: "Abraham Silberschatz", Nationality: "English",
+		Genere: "Science", Bith: "13/05/1980"},
+}
+
+var publishers = []Publisher{
+	Publisher{PublisherId: "Publisher1", Name: "Acantilado", Founded: "17/05/1985",
+		Genere: "Literatura"},
+}
+
 func find(x string) int {
 	for i, book := range books {
 		if x == book.BookId {
@@ -32,7 +43,31 @@ func find(x string) int {
 	return -1
 }
 
+func findAuthorsForBooks(x string) int {
+	books = []Book{}
+	for i, book := range books {
+		if x == book.AuthorId {
+			return i
+		}
+	}
+	return -1
+}
+
+func RemoveBook(array []Book, i int) []Book {
+	array[i] = array[len(array)-1]
+	return array[:len(array)-1]
+
+}
+
 func BooksBookIdDelete(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	i := find(id)
+	if i == -1 {
+		return
+	}
+	RemoveBook(books, i)
+	w.WriteHeader(200)
+	return
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 }
@@ -43,6 +78,20 @@ func BooksBookIdGet(w http.ResponseWriter, r *http.Request) {
 	if i == -1 {
 		return
 	}
+	fmt.Println(i)
+	dataJson, _ := json.Marshal(books[i])
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(dataJson)
+	w.WriteHeader(http.StatusOK)
+}
+
+func AuthorsForBooksGet(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	println(id)
+	i := findAuthorsForBooks(id)
+	if i == -1 {
+		return
+	}
 	dataJson, _ := json.Marshal(books[i])
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Write(dataJson)
@@ -50,8 +99,60 @@ func BooksBookIdGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func BooksBookIdPut(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	book := Book{}
+	json.Unmarshal(body, &book)
+
+	i := find(id)
+	if i == -1 {
+		return
+	}
+
+	book2 := books[i]
+
+	if book.Title != "" {
+		book2.Title = book.Title
+	}
+
+	if book.Edition != "" {
+		book2.Edition = book.Edition
+	}
+
+	if book.Copyright != "" {
+		book2.Copyright = book.Copyright
+	}
+
+	if book.Language != "" {
+		book2.Language = book.Language
+	}
+
+	if book.Pages != "" {
+		book2.Pages = book.Pages
+	}
+
+	if book.Author != "" {
+		book2.Author = book.Author
+	}
+
+	if book.Publisher != "" {
+		book2.Publisher = book.Publisher
+	}
+
+	if book.AuthorId != "" {
+		book2.AuthorId = book.AuthorId
+	}
+
+	if book.PublisherId != "" {
+		book2.PublisherId = book.PublisherId
+	}
+
+	books[i] = book2
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+	return
 }
 
 func BooksPost(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +163,186 @@ func BooksPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	books = append(books, book)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+}
+
+func findAuthor(x string) int {
+	for i, author := range authors {
+		if x == author.AuthorId {
+			return i
+		}
+	}
+	return -1
+}
+
+func RemoveAuthor(array []Author, i int) []Author {
+	array[i] = array[len(array)-1]
+	return array[:len(array)-1]
+
+}
+
+func AuthorsAuthorIdDelete(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	i := findAuthor(id)
+	if i == -1 {
+		return
+	}
+	RemoveAuthor(authors, i)
+	w.WriteHeader(200)
+	return
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+}
+
+func AuthorsAuthorIdGet(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	i := findAuthor(id)
+	if i == -1 {
+		return
+	}
+	dataJson, _ := json.Marshal(authors[i])
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(dataJson)
+	w.WriteHeader(http.StatusOK)
+}
+
+func AuthorsAuthorIdPut(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	author := Author{}
+	json.Unmarshal(body, &author)
+
+	i := findAuthor(id)
+	if i == -1 {
+		return
+	}
+
+	author2 := authors[i]
+
+	if author.Name != "" {
+		author2.Name = author.Name
+	}
+
+	if author.Nationality != "" {
+		author2.Nationality = author.Nationality
+	}
+
+	if author.Bith != "" {
+		author2.Bith = author.Bith
+	}
+
+	if author.Genere != "" {
+		author2.Genere = author.Genere
+	}
+
+	authors[i] = author2
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	return
+}
+
+func AuthorsPost(w http.ResponseWriter, r *http.Request) {
+	var author Author
+	err := json.NewDecoder(r.Body).Decode(&author)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	authors = append(authors, author)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+}
+
+func findPublisher(x string) int {
+	for i, publisher := range publishers {
+		if x == publisher.PublisherId {
+			return i
+		}
+	}
+	return -1
+}
+
+func RemovePublisher(array []Publisher, i int) []Publisher {
+	array[i] = array[len(array)-1]
+	return array[:len(array)-1]
+
+}
+
+func PublishersPublisherIdDelete(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	i := findPublisher(id)
+	if i == -1 {
+		return
+	}
+	RemovePublisher(publishers, i)
+	w.WriteHeader(200)
+	return
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+}
+
+func PublishersPublisherIdGet(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	i := findPublisher(id)
+	if i == -1 {
+		return
+	}
+	dataJson, _ := json.Marshal(publishers[i])
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(dataJson)
+	w.WriteHeader(http.StatusOK)
+}
+
+func PublishersPublisherIdPut(w http.ResponseWriter, r *http.Request) {
+	id := path.Base(r.URL.Path)
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	publisher := Publisher{}
+	json.Unmarshal(body, &publisher)
+
+	i := findAuthor(id)
+	if i == -1 {
+		return
+	}
+
+	publisher2 := publishers[i]
+
+	if publisher.Name != "" {
+		publisher2.Name = publisher.Name
+	}
+
+	if publisher.Country != "" {
+		publisher2.Country = publisher.Country
+	}
+
+	if publisher.Founded != "" {
+		publisher2.Founded = publisher.Founded
+	}
+
+	if publisher.Genere != "" {
+		publisher2.Genere = publisher.Genere
+	}
+
+	publishers[i] = publisher2
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	return
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+}
+
+func PublishersPost(w http.ResponseWriter, r *http.Request) {
+	var publisher Publisher
+	err := json.NewDecoder(r.Body).Decode(&publisher)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	publishers = append(publishers, publisher)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 }
